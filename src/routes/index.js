@@ -33,7 +33,7 @@ router.post('/upload',async (req,res) => {
     let message ="";
 
     //return res.json({message,error,status:500});
-    
+    let separador = "|";
     
     console.log(EDFile.name.slice(0,-4));
     if(EDFile.mimetype !="text/plain"){
@@ -62,8 +62,8 @@ router.post('/upload',async (req,res) => {
             let infoNewFile = "";
             let indiceLine = 1;
             let arrayNewFile =[];
-            let A1,	B1,	C1,	D1,	E1,	F1,	G1,	H1,	I1,	J1,	K1,	L1,	M1,	N1,	O1,	P1,	Q1,	R1,	S1,	T1,	U1,	V1,	W1,	X1,	Y1,	Z1,	A2,	A3,	A4,	A5,	A6,	A7; 
-
+            let A1,	B1,	C1,	D1,	E1,	F1,	G1,	H1,	I1,	J1,	K1,	L1,	M1,	N1,	O1,	P1,	Q1,	R1,	S1,	T1,	U1,	V1,	W1,	X1,	Y1,	Z1,	A2,	A3,	A4,	A5,	A6,	A7, A8, A9,A10, A11, A12, A13; 
+            
 
             for await (const line of readInterface) {
                 // Each line in the readline input will be successively available here as
@@ -89,7 +89,7 @@ router.post('/upload',async (req,res) => {
                         return res.json({message,error,status:500});
                     }
                     A1 = line.substring(0,2);
-                    newline =newline+line.substring(0,2)+",";
+                    newline =newline+line.substring(0,2)+separador;
                     
                     //arrayNewLine.push(newline);
                     //console.log(newline);
@@ -104,7 +104,8 @@ router.post('/upload',async (req,res) => {
                     }
                     valor = await helpers.trimLeftCero(line.substring(2,18));
                     B1 = valor;
-                    newline =newline+valor+",";
+                    
+                    newline =newline+valor+separador;
                     //arrayNewLine.push(newline);
                     //console.log(newline);
 
@@ -117,7 +118,7 @@ router.post('/upload',async (req,res) => {
                         return res.json({message,error,status:500});
                     }
                     C1=line.substring(18,20);
-                    newline =newline+line.substring(18,20)+",";
+                    newline =newline+line.substring(18,20)+separador;
                     //arrayNewLine.push(newline);
                     //console.log(newline);
 
@@ -130,32 +131,32 @@ router.post('/upload',async (req,res) => {
                     }
                     valor = await helpers.trimLeftCero(line.substring(20,36));
                     D1 = valor;
-                    newline =newline+valor+",";
+                    newline =newline+valor+separador;
                     //arrayNewLine.push(newline);
                     //console.log(newline);
 
                     //Primer Apellido
                     E1=line.substring(36,51).trim();
-                    newline =newline+line.substring(36,51).trim()+",";
+                    newline =newline+line.substring(36,51).trim()+separador;
                     
                     //arrayNewLine.push(newline);
                     //console.log(newline);
 
                     //Segundo Apellido
                     F1=line.substring(51,66).trim();
-                    newline =newline+line.substring(51,66).trim()+",";
+                    newline =newline+line.substring(51,66).trim()+separador;
                     //arrayNewLine.push(newline);
                     //console.log(newline);
 
                     //Nombre
                     G1 = line.substring(66,86).trim();
-                    newline =newline+line.substring(66,86).trim()+",";
+                    newline =newline+line.substring(66,86).trim()+separador;
                     //arrayNewLine.push(newline);
                     //console.log(newline);
 
                     //Segundo Nombre
                     H1 = line.substring(86,106).trim();
-                    newline =newline+line.substring(86,106).trim()+",";
+                    newline =newline+line.substring(86,106).trim()+separador;
                     //arrayNewLine.push(newline);
                     //console.log(newline);
 
@@ -167,13 +168,14 @@ router.post('/upload',async (req,res) => {
                         return res.json({message,error,status:500});
                     }
                     I1 = line.substring(106,107).trim();
-                    newline =newline+line.substring(106,107).trim()+",";
+                    newline =newline+line.substring(106,107).trim()+separador;
                     //arrayNewLine.push(newline);
                     //console.log(newline);
 
+
                     //Código IPS
                     J1 = line.substring(107,112).trim();
-                    newline =newline+line.substring(107,112).trim()+",";
+                    newline =newline+line.substring(107,112).trim()+separador;
                     //arrayNewLine.push(newline);
                     //console.log(newline);
 
@@ -187,7 +189,7 @@ router.post('/upload',async (req,res) => {
                     }
                     valor = await helpers.trimLeftCero(line.substring(112,122));
                     K1 = valor;
-                    newline =newline+valor+",";
+                    newline =newline+valor+separador;
                     //arrayNewLine.push(newline);
                     //console.log(newline);
 
@@ -200,77 +202,42 @@ router.post('/upload',async (req,res) => {
                         return res.json({message,error,status:500});
                     }
                     valor = await helpers.trimLeftCero(line.substring(122,130));
+                
+                    valor = await helpers.formatDateString(valor+"");
                     L1 = valor;
-                    newline =newline+valor+",";
+                    newline =newline+valor+separador;
                     //arrayNewLine.push(newline);
                     //console.log(newline);
 
-                    //Estrato
-                    if(!helpers.esNumero(helpers.trimLeftCero(line.substring(130,131))) && !error){
-                        message = "El formato del archivo de texto no cumple con las especificaciónes requeridas para la homologación de la información. Estrato no definido. Linea "+indiceLine;
-                        error = true;
-                        //return res.render('formLoadBase',{message,error});
-                        fs.unlinkSync(pathFile);
-                        return res.json({message,error,status:500});
-                    }
-                    valor = await helpers.trimLeftCero(line.substring(130,131));
-                    M1 = valor;
-                    newline =newline+valor+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                    //Nivel de Atencion
+                    M1 = line.substring(130,131).trim();
+                    newline =newline+line.substring(130,131).trim()+separador;
 
-                    //Contratante
-                    if(!helpers.validRole('S,N',line.substring(131,132)) && !error){
-                        message = "El formato del archivo de texto no cumple con las especificaciónes requeridas para la homologación de la información. contratante no definido. Linea "+indiceLine;
-                        error = true;
-                        //return res.render('formLoadBase',{message,error});
-                        fs.unlinkSync(pathFile);
-                        return res.json({message,error,status:500});
-                    }
-                    N1 = line.substring(131,132).trim();
-                    newline =newline+line.substring(131,132).trim()+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
-            
-                    //Tipo de IPS
-                    if(!helpers.esNumero(helpers.trimLeftCero(line.substring(132,133))) && !error){
-                        message = "El formato del archivo de texto no cumple con las especificaciónes requeridas para la homologación de la información. Tipo IPS no definido. Linea "+indiceLine;
-                        error = true;
-                        //return res.render('formLoadBase',{message,error});
-                        fs.unlinkSync(pathFile);
-                        return res.json({message,error,status:500});
-                    }
-                    valor = await helpers.trimLeftCero(line.substring(132,133));
-                    O1 = valor;
-                    newline =newline+valor+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                     //Cotizante
+                     N1 = line.substring(131,132).trim();
+                     newline =newline+line.substring(131,132).trim()+separador;
 
-                    //Número Beneficiario
-                    P1= line.substring(133,135).trim();
-                    newline =newline+line.substring(133,135).trim()+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                     //IPS
+                     O1 = line.substring(132,133).trim();
+                     newline =newline+line.substring(132,133).trim()+separador;
 
-                    //Plan
-                    Q1 = line.substring(135,145).trim();
-                    newline =newline+line.substring(135,145).trim()+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                     //Numero Beneficiario
+                     P1 = line.substring(133,135).trim();
+                     newline =newline+line.substring(133,135).trim()+separador;
 
-                    //Anexo
-                    R1 = line.substring(145,146).trim();
-                    newline =newline+line.substring(145,146).trim()+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                     //Plan
+                     Q1 = line.substring(135,145).trim();
+                     newline =newline+line.substring(135,145).trim()+separador;
 
-                    //Producto
-                    S1 = line.substring(146,148).trim();
-                    newline =newline+line.substring(146,148).trim()+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                     //Anexo
+                     R1 = line.substring(145,146).trim();
+                     newline =newline+line.substring(145,146).trim()+separador;
 
-                    //Semanas
+                     //Producto
+                     S1 = line.substring(146,148).trim();
+                     newline =newline+line.substring(146,148).trim()+separador;
+
+                     //Semanas Anteriores
                     if(!helpers.esNumero(helpers.trimLeftCero(line.substring(148,153))) && !error){
                         message = "El formato del archivo de texto no cumple con las especificaciónes requeridas para la homologación de la información. Semanas cotizadas no definido. Linea "+indiceLine;
                         error = true;
@@ -280,11 +247,9 @@ router.post('/upload',async (req,res) => {
                     }
                     valor = await helpers.trimLeftCero(line.substring(148,153));
                     T1 = valor;
-                    newline =newline+valor+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                    newline =newline+valor+separador;
 
-                    //Derecho Servicio
+                     //Derecho Servicio
                     if(!helpers.validRole('S,N',line.substring(153,154)) && !error){
                         message = "El formato del archivo de texto no cumple con las especificaciónes requeridas para la homologación de la información. Derecho a servicio no definido. Linea "+indiceLine;
                         error = true;
@@ -293,30 +258,23 @@ router.post('/upload',async (req,res) => {
                         return res.json({message,error,status:500});
                     }
                     U1 = line.substring(153,154).trim();
-                    newline =newline+line.substring(153,154).trim()+",";
+                    newline =newline+line.substring(153,154).trim()+separador;
                     
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
 
-                    //Parentesco
-                    V1 = line.substring(154,156).trim();
-                    newline =newline+line.substring(154,156).trim()+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                     //Parentesco
+                     V1 = line.substring(154,156).trim();
+                     newline =newline+line.substring(154,156).trim()+separador;
 
-                    //Razón Social Empleador
-                    W1 = line.substring(156,206).trim();
-                    newline =newline+line.substring(156,206).trim()+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                     //Razon SociaL
+                     W1 = line.substring(156,206).trim();
+                     newline =newline+line.substring(156,206).trim()+separador;
 
-                    //Causal de No Servicio
-                    X1 = line.substring(206,208).trim();
-                    newline =newline+line.substring(206,208).trim()+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                     //Causa Servicio
+                     X1 = line.substring(206,208).trim();
+                     newline =newline+line.substring(206,208).trim()+separador;
 
-                    //Teléfono Empleador
+
+                    //Teléfono Telefono Empresa
                     if(!helpers.esNumero(helpers.trimLeftCero(line.substring(208,218))) && !error){
                         message = "El formato del archivo de texto no cumple con las especificaciónes requeridas para la homologación de la información. Telefono empleador no definido. Linea "+indiceLine;
                         error = true;
@@ -326,12 +284,10 @@ router.post('/upload',async (req,res) => {
                     }
                     valor = await helpers.trimLeftCero(line.substring(208,218));
                     Y1 = valor;
-                    newline =newline+valor+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                    newline =newline+valor+separador;
 
-                    //Número Solicitud
-                    if(!helpers.esNumero(helpers.trimLeftCero(line.substring(218,226))) && !error){
+                     //Número Solicitud
+                     if(!helpers.esNumero(helpers.trimLeftCero(line.substring(218,226))) && !error){
                         message = "El formato del archivo de texto no cumple con las especificaciónes requeridas para la homologación de la información. Número solicitud no definido. Linea "+indiceLine;
                         error = true;
                         //return res.render('formLoadBase',{message,error});
@@ -340,9 +296,7 @@ router.post('/upload',async (req,res) => {
                     }
                     valor = await helpers.trimLeftCero(line.substring(218,226));
                     Z1 = valor;
-                    newline =newline+valor+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);   
+                    newline =newline+valor+separador;
 
                     //Período
                     if(!helpers.esNumero(helpers.trimLeftCero(line.substring(226,232))) && !error){
@@ -354,43 +308,57 @@ router.post('/upload',async (req,res) => {
                     }
                     valor = await helpers.trimLeftCero(line.substring(226,232));
                     A2 = valor;
-                    newline =newline+valor+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                    newline =newline+valor+separador;
 
-                    //Ciudad
-                    A3 = line.substring(232,277).trim();
-                    newline =newline+line.substring(232,277).trim()+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                    //IPS Hos
+                    A3 = line.substring(232,237).trim();
+                    newline =newline+line.substring(232,237).trim()+separador;
 
-                    //Dirección
-                    A4 = line.substring(277,327).trim();
-                    newline =newline+line.substring(277,327).trim()+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                    //Ciudad Residencia
+                    A4 = line.substring(237,277).trim();
+                    newline =newline+line.substring(237,277).trim()+separador;
+
+                    //Direccion Residencia
+                    A5 = line.substring(277,327).trim();
+                    newline =newline+line.substring(277,327).trim()+separador;
 
                     //Tutela
-                    A5  = line.substring(327,328).trim();
-                    newline =newline+line.substring(327,328).trim()+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                    A6  = line.substring(327,328).trim();
+                    newline =newline+line.substring(327,328).trim()+separador;
 
-                    //CONDICION ESPECIAL
-                    A6 = line.substring(328,330).trim();
-                    newline =newline+line.substring(328,330).trim()+",";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                    //Condicion Especial
+                    A7  = line.substring(328,330).trim();
+                    newline =newline+line.substring(328,330).trim()+separador;
 
-                    //CODIGO EXIME
-                    A7 = line.substring(330,332).trim();
-                    newline =newline+line.substring(330,332).trim()+"\n";
-                    //arrayNewLine.push(newline);
-                    //console.log(newline);
+                    //Tipo Exime
+                    A8  = line.substring(330,331).trim();
+                    newline =newline+line.substring(330,331).trim()+separador;
+
+                    //GRUPO_RIESGO
+                    A9 = line.substring(331,336).trim();
+                    newline =newline+line.substring(330,336).trim()+separador;
+
+                    //SUBGRUPO_RIESGO
+                    A10 = line.substring(336,341).trim();
+                    newline =newline+line.substring(336,341).trim()+separador;
+                    
+
+                    //EMAIL
+                    A11 = line.substring(341,381).trim();
+                    newline =newline+line.substring(341,381).trim()+separador;
+                    
+                    //TELEFONO2
+                    A12 = line.substring(381,393).trim();
+                    newline =newline+line.substring(381,393).trim()+separador;
+                    
+                    //TELEFONO3
+                    A13 = line.substring(393,405).trim();
+                    newline =newline+line.substring(393,405).trim()+"\n";
+                    
                     
 
                     infoNewFile = infoNewFile+newline;
-                    arrayNewFile.push({ A1,	B1,	C1,	D1,	E1,	F1,	G1,	H1,	I1,	J1,	K1,	L1,	M1,	N1,	O1,	P1,	Q1,	R1,	S1,	T1,	U1,	V1,	W1,	X1,	Y1,	Z1,	A2,	A3,	A4,	A5,	A6,	A7});
+                    arrayNewFile.push({ A1,	B1,	C1,	D1,	E1,	F1,	G1,	H1,	I1,	J1,	K1,	L1,	M1,	N1,	O1,	P1,	Q1,	R1,	S1,	T1,	U1,	V1,	W1,	X1,	Y1,	Z1,	A2,	A3,	A4,	A5,	A6,	A7, A8, A9,A10, A11, A12, A13});
 
                 }
                 indiceLine++;

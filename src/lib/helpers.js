@@ -172,6 +172,20 @@ helpers.ifCond = async(v1, v2, optrue, compare="=")=>{
       return newDate.toLocaleString();
  }
 
+ helpers.formatDateString = (fechaStr)=>{
+   let anio, mes, dia;
+
+   //console.log(fechaStr.length);
+   //console.log(fechaStr);
+
+   anio = fechaStr.substring(0,4);
+   mes = fechaStr.substring(4,6);
+   dia = fechaStr.substring(6,8);
+
+   return anio + "-" + mes + "-" +dia;
+
+ }
+
  
 
 helpers.toDateString = (fecha)=>{
